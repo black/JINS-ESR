@@ -118,8 +118,7 @@ public class MainBleActivity extends MainActivity {
     private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
 
         @Override
-        public void onLeScan(final BluetoothDevice device, final int rssi,
-                             final byte[] scanRecord) {
+        public void onLeScan(final BluetoothDevice device, final int rssi, final byte[] scanRecord) {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {

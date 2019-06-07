@@ -51,8 +51,7 @@ public class BluetoothLeService extends Service {
     public final static UUID SERVICE_UUID = UUID.fromString("D6F25BD1-5B54-4360-96D8-7AA62E04C7EF");
     public final static UUID RX_CHAR_UUID = UUID.fromString("D6F25BD4-5B54-4360-96D8-7AA62E04C7EF");
     public final static UUID TX_CHAR_UUID = UUID.fromString("D6F25BD2-5B54-4360-96D8-7AA62E04C7EF");
-    public final static UUID CLIENT_CHARACTERISTIC_CONFIG = UUID
-            .fromString("00002902-0000-1000-8000-00805f9b34fb");
+    public final static UUID CLIENT_CHARACTERISTIC_CONFIG = UUID.fromString("00002902-0000-1000-8000-00805f9b34fb");
 
     private final BluetoothGattCallback mGattCallback = new BluetoothGattCallback() {
 
@@ -97,7 +96,6 @@ public class BluetoothLeService extends Service {
                 String intentAction = ACTION_GATT_SERVICES_DISCOVERED;
                 broadcastUpdate(intentAction);
             }
-
             LogCat.w(TAG, "onServicesDiscovered received: " + status);
         }
 
@@ -108,7 +106,6 @@ public class BluetoothLeService extends Service {
                 String intentAction = ACTION_GATT_DESCRIPTOR_READ;
                 broadcastUpdate(intentAction);
             }
-
             LogCat.w(TAG, "onDescriptorRead received: " + status);
         };
 
