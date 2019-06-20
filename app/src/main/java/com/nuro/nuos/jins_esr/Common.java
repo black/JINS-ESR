@@ -37,41 +37,41 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-public class Common extends Object {
+public class Common {
     private final String TAG = getClass().getSimpleName();
 
-    Context context;
-    Activity activity;
-    Handler handler;
+    private Context context;
+    private Activity activity;
+    private Handler handler;
 
-    public final int mode_usb = 1;
-    public final int mode_ble = 2;
-    int mode_setting = mode_usb;
+    final int mode_usb = 1;
+    final int mode_ble = 2;
+    private int mode_setting = mode_usb;
 
-    public Common(Context context, Activity activity, Handler handler) {
+    Common(Context context, Activity activity, Handler handler) {
         this.context = context;
         this.activity = activity;
         this.handler = handler;
     }
 
-    public void setOrientation() {
-        //Configuration configuration = context.getResources().getConfiguration();
-        //if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB_MR2) {
-        //    if ((configuration.screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) < Configuration.SCREENLAYOUT_SIZE_LARGE) {
-        //        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        //    } else {
-        //        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        //    }
-        //} else {
-        //    if (configuration.smallestScreenWidthDp < 600) {
-        //        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        //    } else {
-        //        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        //    }
-        //}
-        //configuration = null;
-        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-    }
+//    public void setOrientation() {
+//        //Configuration configuration = context.getResources().getConfiguration();
+//        //if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB_MR2) {
+//        //    if ((configuration.screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) < Configuration.SCREENLAYOUT_SIZE_LARGE) {
+//        //        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+//        //    } else {
+//        //        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+//        //    }
+//        //} else {
+//        //    if (configuration.smallestScreenWidthDp < 600) {
+//        //        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+//        //    } else {
+//        //        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+//        //    }
+//        //}
+//        //configuration = null;
+//        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+//    }
 
     public void makeDirectory(String local) {
         String stateStorage = Environment.getExternalStorageState();
@@ -96,7 +96,7 @@ public class Common extends Object {
             PreferenceManager
                     .getDefaultSharedPreferences(context)
                     .edit().putString(context.getString(R.string.key_pref_path), path)
-                    .commit();
+                    .apply();
             if (!new File(path).exists())
                 new File(path).mkdirs();
         }
@@ -259,7 +259,6 @@ public class Common extends Object {
                         .getColor(R.color.colorPrimary));
                 toast.show();
                 toast = null;
-
                 vibrate();
             }
         });

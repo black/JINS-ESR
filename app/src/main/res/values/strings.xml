@@ -69,8 +69,8 @@
     <!-- pref key -->
     <string name="key_pref_path">key_pref_path</string>
     <!-- action label -->
-    <string name="action_information_ble"></string>
-    <string name="action_information_usb"></string>
+    <string name="action_information_ble">INFO BLE</string>
+    <string name="action_information_usb">INFO USB</string>
     <string name="graph">Graph</string>
     <string name="eog_graph_enable">EOG Graph Enable</string>
     <string name="eog_graph_disable">EOG Graph Disable</string>

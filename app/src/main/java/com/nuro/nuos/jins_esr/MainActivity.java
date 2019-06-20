@@ -121,7 +121,7 @@ abstract class MainActivity extends AppCompatActivity {
         graphAcc = new GraphAcc(this, activity, handler);
         graphGyro = new GraphGyro(this, activity, handler);
         // fix orientation
-        common.setOrientation();
+//        common.setOrientation();
         // check storage state
         common.makeDirectory(PATH_LOCAL);
         // set view
@@ -168,32 +168,32 @@ abstract class MainActivity extends AppCompatActivity {
         System.gc();
     }
 
-    @Override
-    public boolean dispatchKeyEvent(KeyEvent event) {
-        if (event.getAction() == KeyEvent.ACTION_DOWN) {
-            switch (event.getKeyCode()) {
-                case KeyEvent.KEYCODE_BACK:
-                    // show finish dialog
-                    AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-                    builder.setMessage(getString(R.string.msg_finish_app));
-                    builder.setPositiveButton(R.string.button_dialog_ok,
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    finish();
-                                }
-                            });
-                    builder.setNegativeButton(R.string.button_dailog_no, null);
-                    builder.setCancelable(false);
-                    builder.show();
-                    builder = null;
-                    return true;
-                default:
-                    break;
-            }
-        }
-        return super.dispatchKeyEvent(event);
-    }
+//    @Override
+//    public boolean dispatchKeyEvent(KeyEvent event) {
+//        if (event.getAction() == KeyEvent.ACTION_DOWN) {
+//            switch (event.getKeyCode()) {
+//                case KeyEvent.KEYCODE_BACK:
+//                    // show finish dialog
+//                    AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+//                    builder.setMessage(getString(R.string.msg_finish_app));
+//                    builder.setPositiveButton(R.string.button_dialog_ok,
+//                            new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialog, int which) {
+//                                    finish();
+//                                }
+//                            });
+//                    builder.setNegativeButton(R.string.button_dailog_no, null);
+//                    builder.setCancelable(false);
+//                    builder.show();
+//                    builder = null;
+//                    return true;
+//                default:
+//                    break;
+//            }
+//        }
+//        return super.dispatchKeyEvent(event);
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

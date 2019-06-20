@@ -14,7 +14,9 @@ import android.bluetooth.BluetoothProfile;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Binder;
+import android.os.Build;
 import android.os.IBinder;
+import android.support.annotation.RequiresApi;
 
 import com.jins.meme.academic.util.DataEncryption;
 import com.jins.meme.academic.util.LogCat;
@@ -22,6 +24,7 @@ import com.jins.meme.academic.util.LogCat;
 import java.util.List;
 import java.util.UUID;
 
+@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
 public class BluetoothLeService extends Service {
     private final String TAG = getClass().getSimpleName();
 
@@ -66,10 +69,9 @@ public class BluetoothLeService extends Service {
                 mConnectionState = STATE_CONNECTED;
                 intentAction = ACTION_GATT_CONNECTED;
                 broadcastUpdate(intentAction);
-                LogCat.i(TAG, "Connected to GATT server.");
-
-                LogCat.i(TAG, "status: " + status);
                 boolean bool = gatt.discoverServices();
+                LogCat.i(TAG, "Connected to GATT server.");
+                LogCat.i(TAG, "status: " + status);
                 LogCat.i(TAG, "Attempting to start service discovery:" + bool);
 
             } else if (newState == BluetoothProfile.STATE_CONNECTING) {

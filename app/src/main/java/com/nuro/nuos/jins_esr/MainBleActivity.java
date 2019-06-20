@@ -10,10 +10,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.os.Build;
 import android.os.IBinder;
-import android.support.v7.app.AppCompatActivity;
+import android.support.annotation.RequiresApi;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -26,7 +28,6 @@ import android.widget.TextView;
 
 import com.jins.meme.academic.util.DataEncryption;
 import com.jins.meme.academic.util.HexDump;
-import com.jins.meme.academic.util.LogCat;
 import com.nuro.nuos.jins_esr.BLE.BluetoothLeService;
 
 import java.math.BigDecimal;
@@ -34,7 +35,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
 
-
+@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
 public class MainBleActivity extends MainActivity {
 
     private BluetoothLeService mBluetoothLeService;
@@ -80,7 +81,7 @@ public class MainBleActivity extends MainActivity {
         // bind service
         Intent intent = new Intent(getApplicationContext(), BluetoothLeService.class);
         bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
-        LogCat.d(TAG, "bind Service");
+        Log.d(TAG, "bind Service");
     }
 
     @Override
@@ -88,7 +89,7 @@ public class MainBleActivity extends MainActivity {
         super.onStop();
         // unbind service
         unbindService(mConnection);
-        LogCat.d(TAG, "unbind Service");
+        Log.d(TAG, "unbind Service");
     }
 
     @Override
@@ -130,7 +131,7 @@ public class MainBleActivity extends MainActivity {
                         String address = device.getAddress();
                         if (!mDeviceSet.contains(address)) {
                             mDeviceSet.add(address);
-                            LogCat.d(TAG, "address: " + address);
+                            Log.d(TAG, "address: " + address);
                         }
                         address = null;
                     }
@@ -175,10 +176,10 @@ public class MainBleActivity extends MainActivity {
             public void onServiceConnected(ComponentName componentName, IBinder service) {
                 mBluetoothLeService = ((BluetoothLeService.LocalBinder) service).getService();
                 if (!mBluetoothLeService.initialize()) {
-                    LogCat.e(TAG, "Unable to initialize Bluetooth");
+                    Log.e(TAG, "Unable to initialize Bluetooth");
                     finish();
                 }
-                LogCat.i(TAG, "initialized Bluetooth");
+                Log.i(TAG, "initialized Bluetooth");
             }
 
             @Override
@@ -193,16 +194,15 @@ public class MainBleActivity extends MainActivity {
     @Override
     protected BroadcastReceiver getReceiver() {
         mReceiver = new BroadcastReceiver() {
-
             @Override
             public void onReceive(Context context, Intent intent) {
                 final String action = intent.getAction();
 
                 if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
-                    LogCat.d(TAG, "ACTION_GATT_CONNECTED");
+                    Log.d(TAG, "ACTION_GATT_CONNECTED");
 
                 } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
-                    LogCat.d(TAG, "ACTION_GATT_DISCONNECTED");
+                    Log.d(TAG, "ACTION_GATT_DISCONNECTED");
 
                     isConnect = false;
                     setViewDefault();
@@ -212,9 +212,11 @@ public class MainBleActivity extends MainActivity {
                     stopService(new Intent(getApplicationContext(), BluetoothLeService.class));
                     common.showToast("Disconncted from the MEME");
                 } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
-                    LogCat.d(TAG, "ACTION_GATT_SERVICES_DISCOVERED");
+                    Log.d(TAG, "ACTION_GATT_SERVICES_DISCOVERED");
 
                     isConnect = true;
+
+                    //start the view for data logger
                     common.setViewConnect(isConnect);
                     try {
                         // notification enable
@@ -234,13 +236,13 @@ public class MainBleActivity extends MainActivity {
                     }
                     invalidateOptionsMenu();
                 } else if (BluetoothLeService.ACTION_GATT_DESCRIPTOR_READ.equals(action)) {
-                    LogCat.d(TAG, "ACTION_GATT_DESCRIPTOR_READ");
+                    Log.d(TAG, "ACTION_GATT_DESCRIPTOR_READ");
 
                 } else if (BluetoothLeService.ACTION_GATT_CHARACTERISTIC_READ.equals(action)) {
-                    LogCat.d(TAG, "ACTION_GATT_CHARACTERISTIC_READ");
+                    Log.d(TAG, "ACTION_GATT_CHARACTERISTIC_READ");
 
                 } else if (BluetoothLeService.ACTION_GATT_DESCRIPTOR_WRITE.equals(action)) {
-                    LogCat.d(TAG, "ACTION_GATT_DESCRIPTOR_WRITE");
+                    Log.d(TAG, "ACTION_GATT_DESCRIPTOR_WRITE");
                     // start service
                     startService(new Intent(getApplicationContext(), BluetoothLeService.class));
                     common.showToast("Conncted to the MEME");
@@ -263,13 +265,13 @@ public class MainBleActivity extends MainActivity {
                         }
                     }, 900L);
                 } else if (BluetoothLeService.ACTION_GATT_CHARACTERISTIC_WRITE.equals(action)) {
-                    LogCat.d(TAG, "ACTION_GATT_CHARACTERISTIC_WRITE");
+                    Log.d(TAG, "ACTION_GATT_CHARACTERISTIC_WRITE");
 
                 } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
-                    LogCat.d(TAG, "ACTION_DATA_AVAILABLE");
+                    Log.d(TAG, "ACTION_DATA_AVAILABLE");
 
                     byte[] data = intent.getByteArrayExtra(BluetoothLeService.EXTRA_DATA);
-                    LogCat.d(TAG, "decode data: " + HexDump.toHexString(data));
+                    Log.d(TAG, "decode data: " + HexDump.toHexString(data));
 
                     analysisData(data);
                 }
@@ -296,6 +298,7 @@ public class MainBleActivity extends MainActivity {
     @SuppressWarnings("deprecation")
     @Override
     protected void scanLeDevice(final boolean enable) {
+        Log.d(TAG,"Test" + enable + "" + mBluetoothAdapter + " "+ isScannin);
         if (!mBluetoothAdapter.isEnabled()) {
             return;
         }
