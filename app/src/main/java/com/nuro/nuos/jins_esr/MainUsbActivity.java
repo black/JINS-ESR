@@ -281,7 +281,6 @@ public class MainUsbActivity extends MainActivity {
             mUsbHostService.openPort(mUsbDevice);
         }
         findViewById(R.id.button_open_usb).setEnabled(false);
-
     }
 
     @Override
@@ -888,6 +887,7 @@ public class MainUsbActivity extends MainActivity {
                 }
                 mDeviceAdapter.notifyDataSetChanged();
                 Spinner spinner = (Spinner) findViewById(R.id.spinner_device);
+                spinner.setAdapter(mDeviceAdapter);
                 spinner.setAdapter(mDeviceAdapter);
             }
         });
